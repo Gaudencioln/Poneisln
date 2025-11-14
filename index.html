@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Mini Pôneis LN - PWA</title>
+    <meta name="description" content="Sistema de gestão completo para criadores de mini pôneis">
+    <meta name="theme-color" content="#4a5d23">
+    
+    <!-- PWA Meta Tags -->
+    <link rel="manifest" href="manifest.json">
+    <meta name="apple-mobile-web-app-capable" content="yes">
+    <meta name="apple-mobile-web-app-status-bar-style" content="default">
+    <meta name="apple-mobile-web-app-title" content="Mini Pôneis LN">
+    
+    <!-- Icons - CORRIGIDO: removido icons/ -->
+    <link rel="icon" type="image/png" sizes="32x32" href="icon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="icon-16x16.png">
+    <link rel="apple-touch-icon" href="icon-192x192.png">
+    
+    <!-- CSS - CORRIGIDO: removido css/ -->
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🐴 Mini Pôneis LN</h1>
+        </header>
+        
+        <nav class="nav-tabs">
+            <button class="nav-tab active" onclick="mostrarSecao('dashboard')">Dashboard</button>
+            <button class="nav-tab" onclick="mostrarSecao('animais')">Animais</button>
+            <button class="nav-tab" onclick="mostrarSecao('genealogia')">Genealogia</button>
+            <button class="nav-tab" onclick="mostrarSecao('reproducao')">Reprodução</button>
+            <button class="nav-tab" onclick="mostrarSecao('partos')">Partos</button>
+            <button class="nav-tab" onclick="mostrarSecao('saidas')">Saídas</button>
+            <button class="nav-tab" onclick="mostrarSecao('saude')">Saúde</button>
+            <button class="nav-tab" onclick="mostrarSecao('relatorios')">Relatórios</button>
+            <button class="nav-tab" onclick="mostrarSecao('backup')">Backup</button>
+        </nav>
+
+        <!-- Dashboard -->
+        <section id="dashboard" class="section active">
+            <h2>📊 Dashboard Executivo</h2>
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="total-animais">0</div>
+                    <div class="stat-label">Total de Animais</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="gestacoes-ativas">0</div>
+                    <div class="stat-label">Gestações Ativas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="receita-vendas">R$ 0</div>
+                    <div class="stat-label">Receita de Vendas</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="animais-ativos">0</div>
+                    <div class="stat-label">Animais Ativos</div>
+                </div>
+            </div>
+            
+            <div class="dashboard-charts">
+                <div class="chart-container">
+                    <h3>Status dos Animais</h3>
+                    <div id="status-chart" class="chart-placeholder">
+                        <div class="status-item">
+                            <span class="status-dot active"></span>
+                            <span>Ativos: <span id="chart-ativos">0</span></span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-dot vendido"></span>
+                            <span>Vendidos: <span id="chart-vendidos">0</span></span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-dot falecido"></span>
+                            <span>Falecidos: <span id="chart-falecidos">0</span></span>
+                        </div>
+                        <div class="status-item">
+                            <span class="status-dot perdido"></span>
+                            <span>Perdidos: <span id="chart-perdidos">0</span></span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="chart-container">
+                    <h3>Últimas Atividades</h3>
+                    <div id="atividades-recentes" class="atividades-list">
+                        <p>Nenhuma atividade registrada ainda.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Animais -->
+        <section id="animais" class="section">
+            <h2>🐎 Gestão de Animais</h2>
+            
+            <div class="form-container">
+                <h3>Cadastrar Novo Animal</h3>
+                <form id="form-animal">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="nome-animal">Nome:</label>
+                            <input type="text" id="nome-animal" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="sexo-animal">Sexo:</label>
+                            <select id="sexo-animal" required>
+                                <option value="">Selecione o sexo</option>
+                                <option value="Macho">Macho</option>
+                                <option value="Fêmea">Fêmea</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="raca-animal">Raça:</label>
+                            <input type="text" id="raca-animal" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="nascimento-animal">Data de Nascimento:</label>
+                            <input type="date" id="nascimento-animal" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="cor-animal">Cor:</label>
+                            <input type="text" id="cor-animal" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="status-animal">Status:</label>
+                            <select id="status-animal" required>
+                                <option value="Ativo">Ativo</option>
+                                <option value="Vendido">Vendido</option>
+                                <option value="Falecido">Falecido</option>
+                                <option value="Perdido">Perdido</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="pai-animal">Pai:</label>
+                            <select id="pai-animal">
+                                <option value="">Não informado</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="mae-animal">Mãe:</label>
+                            <select id="mae-animal">
+                                <option value="">Não informado</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">Cadastrar Animal</button>
+                </form>
+            </div>
+            
+            <div class="list-container">
+                <h3>Animais Cadastrados</h3>
+                <div id="lista-animais" class="animais-grid">
+                    <p>Nenhum animal cadastrado ainda.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Genealogia -->
+        <section id="genealogia" class="section">
+            <h2>🧬 Controle de Genealogia</h2>
+            
+            <div class="genealogia-container">
+                <div class="animal-selector">
+                    <h3>Selecionar Animal</h3>
+                    <select id="animal-genealogia">
+                        <option value="">Selecione um animal</option>
+                    </select>
+                    <button onclick="mostrarArvoreGenealogica()" class="btn-secondary">Ver Árvore Genealógica</button>
+                </div>
+                
+                <div id="arvore-genealogica" class="arvore-container">
+                    <h3>Árvore Genealógica</h3>
+                    <div class="arvore-visual">
+                        <div class="geracao">
+                            <div class="animal-box">
+                                <div class="animal-info" id="avo-paterno">
+                                    <strong>Avô Paterno</strong><br>
+                                    <span>-</span>
+                                </div>
+                            </div>
+                            <div class="animal-box">
+                                <div class="animal-info" id="avo-paterna">
+                                    <strong>Avó Paterna</strong><br>
+                                    <span>-</span>
+                                </div>
+                            </div>
+                            <div class="animal-box">
+                                <div class="animal-info" id="avo-materno">
+                                    <strong>Avô Materno</strong><br>
+                                    <span>-</span>
+                                </div>
+                            </div>
+                            <div class="animal-box">
+                                <div class="animal-info" id="avo-materna">
+                                    <strong>Avó Materna</strong><br>
+                                    <span>-</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="geracao">
+                            <div class="animal-box">
+                                <div class="animal-info" id="pai-genealogia">
+                                    <strong>Pai</strong><br>
+                                    <span>-</span>
+                                </div>
+                            </div>
+                            <div class="animal-box">
+                                <div class="animal-info" id="mae-genealogia">
+                                    <strong>Mãe</strong><br>
+                                    <span>-</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="geracao">
+                            <div class="animal-box central">
+                                <div class="animal-info" id="animal-central">
+                                    <strong id="nome-central">Selecione um animal</strong><br>
+                                    <span id="info-central">-</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="consanguinidade-container">
+                <h3>Análise de Consanguinidade</h3>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="macho-consanguinidade">Macho:</label>
+                        <select id="macho-consanguinidade">
+                            <option value="">Selecione o macho</option>
+                        </select>
+                    </div>
+                    <div class="form-group">
+                        <label for="femea-consanguinidade">Fêmea:</label>
+                        <select id="femea-consanguinidade">
+                            <option value="">Selecione a fêmea</option>
+                        </select>
+                    </div>
+                </div>
+                <button onclick="analisarConsanguinidade()" class="btn-primary">Analisar Consanguinidade</button>
+                
+                <div id="resultado-consanguinidade" class="resultado-analise">
+                    <!-- Resultado da análise aparecerá aqui -->
+                </div>
+            </div>
+        </section>
+
+        <!-- Reprodução -->
+        <section id="reproducao" class="section">
+            <h2>💕 Controle de Reprodução</h2>
+            
+            <div class="form-container">
+                <h3>Registrar Nova Cobertura</h3>
+                <form id="form-cobertura">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="femea-cobertura">Fêmea:</label>
+                            <select id="femea-cobertura" required>
+                                <option value="">Selecione a fêmea</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="data-cobertura">Data da Cobertura:</label>
+                            <input type="date" id="data-cobertura" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="macho-cobertura">Macho:</label>
+                            <select id="macho-cobertura" required>
+                                <option value="">Selecione o macho</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="observacoes-cobertura">Observações:</label>
+                            <textarea id="observacoes-cobertura" placeholder="Observações sobre a cobertura"></textarea>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">Registrar Cobertura</button>
+                </form>
+            </div>
+            
+            <div class="list-container">
+                <h3>Coberturas Registradas</h3>
+                <div id="lista-coberturas" class="coberturas-list">
+                    <p>Nenhuma cobertura registrada ainda.</p>
+                </div>
+            </div>
+            
+            <div class="list-container">
+                <h3>Gestações Confirmadas</h3>
+                <div id="lista-gestacoes" class="gestacoes-list">
+                    <p>Nenhuma gestação confirmada ainda.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Partos -->
+        <section id="partos" class="section">
+            <h2>🍼 Controle de Partos</h2>
+            
+            <div class="form-container">
+                <h3>Registrar Novo Parto</h3>
+                <form id="form-parto">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="mae-parto">Fêmea (Mãe):</label>
+                            <select id="mae-parto" required>
+                                <option value="">Selecione a mãe</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="nome-potro">Nome do Potro:</label>
+                            <input type="text" id="nome-potro" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="pai-parto">Macho (Pai):</label>
+                            <select id="pai-parto" required>
+                                <option value="">Selecione o pai</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="sexo-potro">Sexo do Potro:</label>
+                            <select id="sexo-potro" required>
+                                <option value="">Selecione o sexo</option>
+                                <option value="Macho">Macho</option>
+                                <option value="Fêmea">Fêmea</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="data-parto">Data do Parto:</label>
+                            <input type="date" id="data-parto" required>
+                        </div>
+                        <div class="form-group">
+                            <label for="observacoes-parto">Observações:</label>
+                            <textarea id="observacoes-parto" placeholder="Observações sobre o parto"></textarea>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">Registrar Parto</button>
+                </form>
+            </div>
+            
+            <div class="list-container">
+                <h3>Partos Previstos (Baseado em Gestações)</h3>
+                <div id="partos-previstos" class="partos-previstos-list">
+                    <p>Nenhum parto próximo baseado nas gestações ativas.</p>
+                </div>
+            </div>
+            
+            <div class="list-container">
+                <h3>Histórico de Nascimentos</h3>
+                <div id="historico-partos" class="partos-list">
+                    <p>Nenhum parto registrado.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Saídas -->
+        <section id="saidas" class="section">
+            <h2>📤 Controle de Saídas</h2>
+            
+            <div class="form-container">
+                <h3>Registrar Nova Saída</h3>
+                <form id="form-saida">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="animal-saida">Animal:</label>
+                            <select id="animal-saida" required>
+                                <option value="">Selecione o animal</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="tipo-saida">Tipo de Saída:</label>
+                            <select id="tipo-saida" required onchange="mostrarCamposVenda()">
+                                <option value="">Selecione o tipo</option>
+                                <option value="Venda">Venda</option>
+                                <option value="Morte">Morte</option>
+                                <option value="Perda">Perda</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="data-saida">Data da Saída:</label>
+                            <input type="date" id="data-saida" required>
+                        </div>
+                        <div class="form-group" id="grupo-valor" style="display: none;">
+                            <label for="valor-venda">Valor da Venda:</label>
+                            <input type="number" id="valor-venda" step="0.01" placeholder="0.00">
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group" id="grupo-comprador" style="display: none;">
+                            <label for="comprador">Comprador:</label>
+                            <input type="text" id="comprador" placeholder="Nome do comprador">
+                        </div>
+                        <div class="form-group">
+                            <label for="observacoes-saida">Observações:</label>
+                            <textarea id="observacoes-saida" placeholder="Observações sobre a saída"></textarea>
+                        </div>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">Registrar Saída</button>
+                </form>
+            </div>
+            
+            <div class="resumo-financeiro">
+                <h3>Resumo Financeiro</h3>
+                <div class="stats-row">
+                    <div class="stat-item">
+                        <span class="stat-label">Total de Vendas:</span>
+                        <span class="stat-value" id="total-vendas">0</span>
+                    </div>
+                    <div class="stat-item">
+                        <span class="stat-label">Receita Total:</span>
+                        <span class="stat-value" id="receita-total">R$ 0,00</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="list-container">
+                <h3>Histórico de Saídas</h3>
+                <div id="lista-saidas" class="saidas-list">
+                    <p>Nenhuma saída registrada ainda.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Saúde -->
+        <section id="saude" class="section">
+            <h2>🏥 Controle de Saúde</h2>
+            
+            <div class="form-container">
+                <h3>Registrar Procedimento de Saúde</h3>
+                <form id="form-saude">
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="animal-saude">Animal:</label>
+                            <select id="animal-saude" required>
+                                <option value="">Selecione o animal</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="data-procedimento">Data do Procedimento:</label>
+                            <input type="date" id="data-procedimento" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-row">
+                        <div class="form-group">
+                            <label for="tipo-procedimento">Tipo de Procedimento:</label>
+                            <select id="tipo-procedimento" required>
+                                <option value="">Selecione o tipo</option>
+                                <option value="Vacinação">Vacinação</option>
+                                <option value="Vermifugação">Vermifugação</option>
+                                <option value="Consulta">Consulta Veterinária</option>
+                                <option value="Tratamento">Tratamento</option>
+                                <option value="Exame">Exame</option>
+                                <option value="Cirurgia">Cirurgia</option>
+                                <option value="Outro">Outro</option>
+                            </select>
+                        </div>
+                        <div class="form-group">
+                            <label for="veterinario">Veterinário:</label>
+                            <input type="text" id="veterinario" required>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="observacoes-saude">Observações:</label>
+                        <textarea id="observacoes-saude" placeholder="Detalhes do procedimento, medicamentos utilizados, etc." required></textarea>
+                    </div>
+                    
+                    <button type="submit" class="btn-primary">Registrar Procedimento</button>
+                </form>
+            </div>
+            
+            <div class="list-container">
+                <h3>Histórico de Saúde</h3>
+                <div id="lista-saude" class="saude-list">
+                    <p>Nenhum procedimento registrado ainda.</p>
+                </div>
+            </div>
+        </section>
+
+        <!-- Relatórios -->
+        <section id="relatorios" class="section">
+            <h2>📋 Relatórios Especializados</h2>
+            
+            <div class="relatorios-grid">
+                <div class="relatorio-card" onclick="gerarRelatorio('rebanho')">
+                    <h3>📊 Relatório de Rebanho Ativo</h3>
+                    <p>Lista completa dos animais ativos com informações detalhadas</p>
+                    <button class="btn-secondary">Gerar Relatório</button>
+                </div>
+                
+                <div class="relatorio-card" onclick="gerarRelatorio('genealogico')">
+                    <h3>🧬 Análise Genealógica</h3>
+                    <p>Mapeamento completo das linhagens e parentescos</p>
+                    <button class="btn-secondary">Gerar Relatório</button>
+                </div>
+                
+                <div class="relatorio-card" onclick="gerarRelatorio('reprodutivo')">
+                    <h3>💕 Relatório Reprodutivo</h3>
+                    <p>Histórico de coberturas, gestações e nascimentos</p>
+                    <button class="btn-secondary">Gerar Relatório</button>
+                </div>
+                
+                <div class="relatorio-card" onclick="gerarRelatorio('financeiro')">
+                    <h3>💰 Controle Financeiro</h3>
+                    <p>Análise de vendas e receitas do rebanho</p>
+                    <button class="btn-secondary">Gerar Relatório</button>
+                </div>
+                
+                <div class="relatorio-card" onclick="gerarRelatorio('saude-geral')">
+                    <h3>🏥 Relatório de Saúde</h3>
+                    <p>Histórico veterinário e procedimentos realizados</p>
+                    <button class="btn-secondary">Gerar Relatório</button>
+                </div>
+                
+                <div class="relatorio-card" onclick="gerarRelatorio('estatisticas')">
+                    <h3>📈 Estatísticas Gerais</h3>
+                    <p>Indicadores e métricas do sistema de gestão</p>
+                    <button class="btn-secondary">Gerar Relatório</button>
+                </div>
+            </div>
+            
+            <div id="conteudo-relatorio" class="relatorio-conteudo">
+                <p>Selecione um relatório acima para visualizar os dados.</p>
+            </div>
+        </section>
+
+        <!-- Backup -->
+        <section id="backup" class="section">
+            <h2>💾 Importação e Exportação de Dados</h2>
+            
+            <div class="backup-container">
+                <div class="backup-section">
+                    <h3>📤 Exportar Dados</h3>
+                    <p>Faça backup de todos os seus dados para manter suas informações seguras.</p>
+                    
+                    <div class="dados-incluidos">
+                        <h4>Dados incluídos no backup:</h4>
+                        <ul>
+                            <li>🐎 Animais cadastrados</li>
+                            <li>💕 Coberturas registradas</li>
+                            <li>🤰 Gestações ativas</li>
+                            <li>🍼 Histórico de partos</li>
+                            <li>📤 Registro de saídas</li>
+                            <li>🏥 Histórico de saúde</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="export-buttons">
+                        <button onclick="exportarDados('json')" class="btn-primary">
+                            📄 Exportar como JSON
+                        </button>
+                        <button onclick="exportarDados('csv')" class="btn-secondary">
+                            📊 Exportar como CSV
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="backup-section">
+                    <h3>📥 Importar Dados</h3>
+                    <p>Restaure seus dados de um arquivo de backup anterior.</p>
+                    
+                    <div class="import-area">
+                        <input type="file" id="arquivo-importacao" accept=".json,.csv" style="display: none;">
+                        <button onclick="document.getElementById('arquivo-importacao').click()" class="btn-secondary">
+                            📁 Selecionar Arquivo
+                        </button>
+                        <button onclick="importarDados()" class="btn-primary">
+                            📥 Importar Dados
+                        </button>
+                    </div>
+                    
+                    <div class="import-warning">
+                        <p>⚠️ <strong>Atenção:</strong> A importação substituirá todos os dados atuais. Certifique-se de fazer um backup antes de importar.</p>
+                    </div>
+                </div>
+                
+                <div id="status-backup" class="status-backup">
+                    <!-- Status das operações de backup aparecerá aqui -->
+                </div>
+            </div>
+        </section>
+    </div>
+
+    <!-- JavaScript - CORRIGIDO: removido js/ -->
+    <script src="app.js"></script>
+    <script src="service-worker-register.js"></script>
+</body>
+</html>
