@@ -3,16 +3,17 @@ const CACHE_NAME = 'mini-poneis-v1';
 const STATIC_CACHE = 'static-v1';
 const DYNAMIC_CACHE = 'dynamic-v1';
 
-// Recursos para cache estático
+// Recursos para cache estático (caminhos corrigidos para raiz)
 const STATIC_ASSETS = [
     '/',
     '/index.html',
-    '/css/styles.css',
-    '/js/app.js',
-    '/js/service-worker-register.js',
+    '/styles.css',
+    '/app.js',
+    '/service-worker-register.js',
     '/manifest.json',
-    '/icons/icon-192x192.png',
-    '/icons/icon-512x512.png'
+    '/icon-192x192.png',
+    '/icon-512x512.png',
+    '/favicon.ico'
 ];
 
 // Instalação do Service Worker
